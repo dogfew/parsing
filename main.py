@@ -53,7 +53,7 @@ if __name__ == '__main__':
             print(f'        Got information for {user}!')
         except Exception as e:
             dictionary[user] = None
-            print(f"        Couldn't get information for {user}:\n      {e}", end='\n')
+            print(f"        Couldn't get information for {user}:\n          {e}", end='\n')
         # comments
         try:
             print(f"    Trying to get comments... for {user}")
@@ -62,6 +62,6 @@ if __name__ == '__main__':
                 dictionary[name][user][video]['comments'] = get_comments(video_id)
             print(f"        We've got comments for {user}")
         except Exception as e:
-            print(f"        Couldn't get comments for {user}:\n     {e}")
+            print(f"        Couldn't get comments for {user}:\n         {e}")
     json.dump(dictionary, open('data.json', "w+"))
 
