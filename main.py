@@ -30,7 +30,7 @@ def get_info_from_video(video: str) -> dict:
         video_description = info_dict.get('description', None)
     return {'title': video_title, 'views': video_views,
             'likes': video_likes, 'id': video_id,
-            'description': video_description, 'comments':None}
+            'description': video_description}
 
 
 def create_portfolio(user_id: str) -> dict:
@@ -52,13 +52,13 @@ if __name__ == '__main__':
     file_name = 'data_{}-{}-{}_{}:{}.json'.format(date.year, date.month, date.day, date.hour, date.minute)
     json.dump(dictionary, open(file_name, "w+"))
     # add comments
-    with open(file_name) as f:
-        data = json.load(f)
-    for channel in data:
-        for video in data[channel]:
-            video_id = data[channel][video]['id']
-            try: data[channel][video]['comments'] = get_comments(video_id)
-            except Exception: pass
-    with open(f"{file_name}_comments", 'w+') as f:
-        json.dump(data, f)
+    # with open(file_name) as f:
+    #     data = json.load(f)
+    # for channel in data:
+    #     for video in data[channel]:
+    #         video_id = data[channel][video]['id']
+    #         try: data[channel][video]['comments'] = get_comments(video_id)
+    #         except Exception: pass
+    # with open(f"{file_name}_comments", 'w+') as f:
+    #     json.dump(data, f)
 
