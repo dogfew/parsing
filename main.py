@@ -38,27 +38,30 @@ def create_portfolio(user_id: str) -> dict:
 
 
 if __name__ == '__main__':
-    dictionary = dict()
-    # users = []
+    with open('data.json') as f:
+        dictionary = json.load(f)
+    date = datetime.now()
+    name = '{}-{:0>2}-{:0>2}_{:0>2}:{:0>2}'.format(date.year, date.month, date.day, date.hour, date.minute)
+    dictionary[name] = dict()
     with open('channels.csv', 'r') as f:
         users = [user for user in f.read().split(';')]
-        print('Users:', users)
+        print('Users:', *users)
     for user in users:
         try:
-            dictionary[user] = create_portfolio(user)
-        except Exception:
+            print(f'Getting information for {user}', end='... ')
+            dictionary[name][user] = create_portfolio(user)
+            print(f'Got information for {user}!')
+        except Exception as e:
             dictionary[user] = None
-    date = datetime.now()
-    file_name = 'data_{}-{}-{}_{}:{}.json'.format(date.year, date.month, date.day, date.hour, date.minute)
-    json.dump(dictionary, open(file_name, "w+"))
-    # add comments
-    # with open(file_name) as f:
-    #     data = json.load(f)
-    # for channel in data:
-    #     for video in data[channel]:
-    #         video_id = data[channel][video]['id']
-    #         try: data[channel][video]['comments'] = get_comments(video_id)
-    #         except Exception: pass
-    # with open(f"{file_name}_comments", 'w+') as f:
-    #     json.dump(data, f)
+            print(f"Couldn't get information for {user}:\n{e}", end='\n')
+        # comments
+        try:
+            print(f"Trying to get comments... for {user}")
+            for video in dictionary[name][user]:
+                video_id = dictionary[name][user][video]['id']
+                dictionary[name][user][video]['comments'] = get_comments(video_id)
+            print(f"We've got comments for {user}")
+        except Exception as e:
+            print(f"Couldn't get comments for {user}:\n{e}")
+    json.dump(dictionary, open('data.json', "w+"))
 
