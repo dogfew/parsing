@@ -48,20 +48,20 @@ if __name__ == '__main__':
         print('Users:', *users)
     for user in users:
         try:
-            print(f'Getting information for {user}', end='... ')
+            print(f'Getting information for {user}', end='...\n')
             dictionary[name][user] = create_portfolio(user)
-            print(f'Got information for {user}!')
+            print(f'        Got information for {user}!')
         except Exception as e:
             dictionary[user] = None
-            print(f"Couldn't get information for {user}:\n{e}", end='\n')
+            print(f"        Couldn't get information for {user}:\n      {e}", end='\n')
         # comments
         try:
-            print(f"Trying to get comments... for {user}")
+            print(f"    Trying to get comments... for {user}")
             for video in dictionary[name][user]:
                 video_id = dictionary[name][user][video]['id']
                 dictionary[name][user][video]['comments'] = get_comments(video_id)
-            print(f"We've got comments for {user}")
+            print(f"        We've got comments for {user}")
         except Exception as e:
-            print(f"Couldn't get comments for {user}:\n{e}")
+            print(f"        Couldn't get comments for {user}:\n     {e}")
     json.dump(dictionary, open('data.json', "w+"))
 
